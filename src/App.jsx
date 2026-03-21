@@ -1,21 +1,27 @@
-import { NavLink, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import { useTheme } from './hooks/useTheme'
 import Home from './pages/Home'
 import About from './pages/About'
 import Projects from './pages/Projects'
 
 function App() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">JH</div>
-        <nav>
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
-        </nav>
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={
+            theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+          }
+        >
+          {theme === 'light' ? 'Dark' : 'Light'}
+        </button>
       </header>
 
       <main>

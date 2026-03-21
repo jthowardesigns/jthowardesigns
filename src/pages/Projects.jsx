@@ -25,7 +25,7 @@ const Projects = () => (
   <section className="page" id="projects">
     <h2>Projects</h2>
     <div className="grid">
-      {projects.map((project) => (
+      {projects.map(project => (
         <article key={project.title} className="card">
           <div className="card-header">
             <h3>{project.title}</h3>
