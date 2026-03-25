@@ -14,7 +14,7 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(distPath, 'index.html'))
 })
 
-const PORT = process.env.PORT || 5173
+const PORT = Number(process.env.PORT) || 5173
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 })
