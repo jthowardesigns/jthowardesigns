@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export const THEME_STORAGE_KEY = 'jthowardesigns-theme'
+export const THEME_STORAGE_KEY = 'jthowardesigns-theme' as const
 
-/** @returns {'light' | 'dark'} */
-function readStoredTheme() {
+export type Theme = 'light' | 'dark'
+
+function readStoredTheme(): Theme {
   if (typeof window === 'undefined') return 'light'
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY)
@@ -16,8 +17,14 @@ function readStoredTheme() {
     : 'light'
 }
 
-export function useTheme() {
-  const [theme, setTheme] = useState(readStoredTheme)
+export interface UseThemeResult {
+  theme: Theme
+  setTheme: (t: Theme) => void
+  toggleTheme: () => void
+}
+
+export function useTheme(): UseThemeResult {
+  const [theme, setTheme] = useState<Theme>(readStoredTheme)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)

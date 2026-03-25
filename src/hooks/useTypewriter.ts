@@ -5,13 +5,9 @@ export const BRAND_WORDS = [
   'jthowardevelops',
   'jthowardoodles',
   'jthowardelivers',
-]
+] as const
 
-/**
- * @param {string[]} strs
- * @returns {number}
- */
-function longestCommonPrefixLength(strs) {
+function longestCommonPrefixLength(strs: readonly string[]): number {
   const nonEmpty = strs.filter(s => s.length > 0)
   if (!nonEmpty.length) return 0
   const first = nonEmpty[0]
@@ -24,17 +20,18 @@ function longestCommonPrefixLength(strs) {
   return first.length
 }
 
-/**
- * @param {string[]} words
- * @param {{
- *   typingSpeed?: number
- *   deletingSpeed?: number
- *   pauseMs?: number
- *   prefixLength?: number
- *   pauseBetweenDeletesMs?: number
- * }} [options]
- */
-export function useTypewriter(words = BRAND_WORDS, options = {}) {
+export interface UseTypewriterOptions {
+  typingSpeed?: number
+  deletingSpeed?: number
+  pauseMs?: number
+  prefixLength?: number
+  pauseBetweenDeletesMs?: number
+}
+
+export function useTypewriter(
+  words: readonly string[] = BRAND_WORDS,
+  options: UseTypewriterOptions = {}
+): string {
   const {
     typingSpeed = 80,
     deletingSpeed = 45,
@@ -60,7 +57,7 @@ export function useTypewriter(words = BRAND_WORDS, options = {}) {
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
-      setText(words[0])
+      setText(words[0] ?? '')
       return
     }
 
@@ -77,8 +74,7 @@ export function useTypewriter(words = BRAND_WORDS, options = {}) {
 
     let wordIndex = 0
     let charIndex = 0
-    /** @type {'typing' | 'pausing' | 'deleting'} */
-    let phase = 'typing'
+    let phase: 'typing' | 'pausing' | 'deleting' = 'typing'
     let timeoutId = 0
     let cancelled = false
 
