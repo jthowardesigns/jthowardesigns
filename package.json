@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "start:server": "tsx server.ts",
-    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"vite.config.ts\" \"server.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"vite.config.ts\" \"server.ts\""
   },
   "dependencies": {
     "express": "^4.21.2",
