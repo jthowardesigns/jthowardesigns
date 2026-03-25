@@ -1,4 +1,6 @@
-const colorTokens = [
+import type { CSSProperties } from 'react'
+
+const colorTokens: { name: string; label: string }[] = [
   { name: '--color-bg', label: 'Background' },
   { name: '--color-fg', label: 'Foreground' },
   { name: '--color-brand', label: 'Brand' },
@@ -18,7 +20,11 @@ const spaceTokens = [
   '--space-6',
 ]
 
-const typeScale = [
+const typeScale: {
+  className: string
+  style: CSSProperties
+  label: string
+}[] = [
   {
     className: 'ds-type-sample',
     style: { fontSize: 'var(--text-2xl)' },
@@ -51,10 +57,10 @@ const typeScale = [
   },
 ]
 
-const radiusTokens = [
-  { var: '--radius-sm', label: 'sm' },
-  { var: '--radius-md', label: 'md' },
-  { var: '--radius-lg', label: 'lg' },
+const radiusTokens: { cssVar: string; label: string }[] = [
+  { cssVar: '--radius-sm', label: 'sm' },
+  { cssVar: '--radius-md', label: 'md' },
+  { cssVar: '--radius-lg', label: 'lg' },
 ]
 
 const DesignSystem = () => (
@@ -112,11 +118,11 @@ const DesignSystem = () => (
     <section className="ds-section" aria-labelledby="ds-radius-heading">
       <h2 id="ds-radius-heading">Radius</h2>
       <div>
-        {radiusTokens.map(({ var: v, label }) => (
+        {radiusTokens.map(({ cssVar, label }) => (
           <span
-            key={v}
+            key={cssVar}
             className="ds-radius-demo"
-            style={{ borderRadius: `var(${v})` }}
+            style={{ borderRadius: `var(${cssVar})` }}
           >
             {label}
           </span>

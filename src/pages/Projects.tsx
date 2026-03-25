@@ -1,6 +1,12 @@
 import LinkButton from '../components/LinkButton'
 
-const projects = [
+interface Project {
+  title: string
+  description: string
+  link: string
+}
+
+const projects: Project[] = [
   {
     title: 'Design System Refresh',
     description:

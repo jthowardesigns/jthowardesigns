@@ -1,3 +1,4 @@
+import type { NavLinkProps } from 'react-router-dom'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
 import './styles/tokens.css'
 import './App.css'
@@ -7,7 +8,8 @@ import About from './pages/About'
 import Projects from './pages/Projects'
 import DesignSystem from './pages/DesignSystem'
 
-const navLinkClass = ({ isActive }) => (isActive ? 'active' : undefined)
+const navLinkClass: NavLinkProps['className'] = ({ isActive }) =>
+  isActive ? 'active' : undefined
 
 function App() {
   const { theme, toggleTheme } = useTheme()
