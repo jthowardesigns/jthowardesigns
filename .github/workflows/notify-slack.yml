@@ -1,0 +1,49 @@
+# Notify Slack Workflow Builder when the label "needs review" is added to a pull request.
+#
+# Slack setup (manual):
+# 1. Create a workflow with a Webhook trigger.
+# 2. Define variables with these exact names (JSON keys are case-sensitive):
+#    author, link, description
+# 3. Publish and copy the webhook URL.
+#
+# GitHub setup (manual):
+# - Repository secret: SLACK_WORKFLOW_WEBHOOK_URL = the Slack webhook URL
+# - Repo label named exactly: needs review
+
+name: Notify Slack on label
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'needs review' }}
+    steps:
+      - name: POST Slack workflow webhook
+        env:
+          SLACK_WORKFLOW_WEBHOOK_URL: ${{ secrets.SLACK_WORKFLOW_WEBHOOK_URL }}
+          LABEL: ${{ github.event.label.name }}
+          REPOSITORY: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ITEM_URL: ${{ github.event.pull_request.html_url }}
+          TITLE: ${{ github.event.pull_request.title }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          AUTHOR="$ACTOR"
+          LINK="$ITEM_URL"
+          DESCRIPTION=$(printf '%s\n%s' \
+            "Label \"$LABEL\" added to pull request #${NUMBER} in ${REPOSITORY}: ${TITLE}" \
+            "Workflow run: ${RUN_URL}")
+          jq -nc \
+            --arg author "$AUTHOR" \
+            --arg link "$LINK" \
+            --arg description "$DESCRIPTION" \
+            '{author:$author,link:$link,description:$description}' \
+          | curl -fsS -X POST -H 'Content-Type: application/json' -d @- "$SLACK_WORKFLOW_WEBHOOK_URL"
