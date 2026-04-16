@@ -27,20 +27,14 @@ jobs:
       - name: POST Slack workflow webhook
         env:
           SLACK_WORKFLOW_WEBHOOK_URL: ${{ secrets.SLACK_WORKFLOW_WEBHOOK_URL }}
-          LABEL: ${{ github.event.label.name }}
-          REPOSITORY: ${{ github.repository }}
           ACTOR: ${{ github.actor }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           ITEM_URL: ${{ github.event.pull_request.html_url }}
           TITLE: ${{ github.event.pull_request.title }}
-          NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
           AUTHOR="$ACTOR"
           LINK="$ITEM_URL"
-          DESCRIPTION=$(printf '%s\n%s' \
-            "Label \"$LABEL\" added to pull request #${NUMBER} in ${REPOSITORY}: ${TITLE}" \
-            "Workflow run: ${RUN_URL}")
+          DESCRIPTION="$TITLE"
           jq -nc \
             --arg author "$AUTHOR" \
             --arg link "$LINK" \
