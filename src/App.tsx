@@ -8,6 +8,9 @@ import About from './pages/About'
 import Projects from './pages/Projects'
 import DesignSystem from './pages/DesignSystem'
 
+/** Toggle when the Projects page is ready to appear in the primary nav again. */
+const SHOW_PROJECTS_IN_NAV = false
+
 const navLinkClass: NavLinkProps['className'] = ({ isActive }) =>
   isActive ? 'active' : undefined
 
@@ -35,9 +38,11 @@ function App() {
             <NavLink to="/about" className={navLinkClass}>
               About
             </NavLink>
-            <NavLink to="/projects" className={navLinkClass}>
-              Projects
-            </NavLink>
+            {SHOW_PROJECTS_IN_NAV ? (
+              <NavLink to="/projects" className={navLinkClass}>
+                Projects
+              </NavLink>
+            ) : null}
             <NavLink to="/design-system" className={navLinkClass}>
               Design system
             </NavLink>
