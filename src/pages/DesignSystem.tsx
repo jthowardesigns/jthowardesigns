@@ -9,6 +9,11 @@ const colorTokens: { name: string; label: string }[] = [
   { name: '--color-surface-elevated', label: 'Surface elevated' },
   { name: '--color-link', label: 'Link' },
   { name: '--color-typewriter-prefix', label: 'Typewriter prefix' },
+  { name: '--accent-design', label: 'Accent · design' },
+  { name: '--accent-build', label: 'Accent · build' },
+  { name: '--accent-doodle', label: 'Accent · doodle' },
+  { name: '--accent-ship', label: 'Accent · ship' },
+  { name: '--color-tag-bg', label: 'Tag background' },
 ]
 
 const spaceTokens = [

@@ -1,17 +1,19 @@
-import { BRAND_WORDS, useTypewriter } from '../hooks/useTypewriter'
-
-/** Set to true for heavier monospace (see `.typewriter-hero--bold` in App.css). */
-const TYPEWRITER_BOLD = true
-
-/** Must match `prefixLength` in useTypewriter — muted styling for `jthowar`. */
-const TYPEWRITER_PREFIX_LEN = 7
+import { useEffect } from 'react'
+import { usePersonalityTypewriter } from '../hooks/usePersonalityTypewriter'
 
 const Home = () => {
-  const text = useTypewriter(BRAND_WORDS, {
-    prefixLength: TYPEWRITER_PREFIX_LEN,
-    pauseMs: 4500,
-    pauseBetweenDeletesMs: 70,
-  })
+  const { prefixText, suffixText, personality } = usePersonalityTypewriter()
+
+  useEffect(() => {
+    const root = document.documentElement
+    root.style.setProperty('--nav-accent', `var(${personality.accentVar})`)
+    root.style.setProperty('--footer-accent', `var(${personality.accentVar})`)
+
+    return () => {
+      root.style.removeProperty('--nav-accent')
+      root.style.removeProperty('--footer-accent')
+    }
+  }, [personality.accentVar])
 
   return (
     <section className="page page--home">
@@ -19,22 +21,31 @@ const Home = () => {
         <h1 className="visually-hidden">
           jthowardesigns. Senior Software Engineer and Investor.
         </h1>
-        <p
-          className={`typewriter-hero${TYPEWRITER_BOLD ? ' typewriter-hero--bold' : ''}`}
-          aria-hidden="true"
-        >
-          <span className="typewriter-text">
-            <span className="typewriter-prefix">
-              {text.slice(0, TYPEWRITER_PREFIX_LEN)}
-            </span>
-            <span className="typewriter-suffix">
-              {text.slice(TYPEWRITER_PREFIX_LEN)}
+        <p className="hero-word" aria-hidden="true">
+          <span className="wrap">
+            <span className="prefix">{prefixText}</span>
+            <span
+              className="suffix"
+              style={{
+                fontFamily: personality.font,
+                fontSize: personality.size,
+                fontWeight: personality.weight,
+                fontStyle: personality.style,
+              }}
+            >
+              {suffixText}
             </span>
           </span>
-          <span className="typewriter-cursor" />
+          <span className="cursor" />
         </p>
-        <p className="hero-tagline" aria-hidden="true">
-          Senior Software Engineer and Investor
+        <div className="tag-row" aria-hidden="true">
+          <span className="tag">{personality.tag}</span>
+          <span className="tag-desc">{personality.description}</span>
+        </div>
+        <p className="bio">
+          Atlanta-based designer and software engineer. I ship React and
+          TypeScript front ends and the design systems that keep them
+          consistent.
         </p>
       </div>
     </section>
